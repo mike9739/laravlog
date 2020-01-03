@@ -18,31 +18,19 @@
      <div class="form-group">
         <label for="title">Title</label>
         <input readonly  class="form-control" type="text" name="title" value="{{$post->title}}">
-        @error('title')
-        <div class="alert alert-danger mt-3" role="alert">
-            Por favor inserte un titulo valido
-        </div>
-        @enderror
+
     </div>
 
     <div class="form-group">
         <label for="url_clean">Url</label>
         <input readonly  class="form-control" type="text" name="url_clean"  value="{{$post->url_clean}}">
-        @error('url_clean')
-        <div class="alert alert-danger mt-3" role="alert">
-            Por favor inserte una url valida
-        </div>
-        @enderror
+
     </div>
 
     <div class="form-group">
         <label for="content">Content</label>
         <textarea readonly  class="form-control" name="content"rows="3">{{$post->content}}</textarea>
-        @error('content')
-        <div class="alert alert-danger mt-3" role="alert">
-            Por favor inserte un contenido valido
-        </div>
-        @enderror
+
     </div>
 
 
