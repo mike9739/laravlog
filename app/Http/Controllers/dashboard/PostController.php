@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostPost;
+use App\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::orderBy('created_at','desc')->paginate(4);
+
+        return view("dashboard.post.index",['posts'=>$posts]);
+
     }
 
     /**
@@ -34,10 +39,25 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostPost $request)
     {
-        //
-        echo "Storage";
+        //VALIDACION DEL FORMULARIO
+    //    $request->validate([
+    //        'title'=>'required| min:5 | max:500',
+    //        'url_clean' => 'required | min:5 | max:500',
+    //        'content' => 'required | min:5'
+    //    ]);
+        echo "El titulo es: ".$request->input('title');
+        Post::create($request -> validated());
+
+
+
+        return back()->with('status','Post creado con exito');
+
+
+
+
+
     }
 
     /**
@@ -49,6 +69,9 @@ class PostController extends Controller
     public function show($id)
     {
         //
+        $post = Post::find($id);
+        return view('dashboard.post.show',["post"=>$post]);
+
     }
 
     /**

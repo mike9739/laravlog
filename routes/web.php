@@ -13,5 +13,5 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
-Route::resource('post', 'dashboard\PostController');
+})->name('home');
+Route::resource('dashboard/post', 'dashboard\PostController');
