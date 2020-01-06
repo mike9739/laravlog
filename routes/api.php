@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::resource('post', 'api\PostController')->only([
+    'index','show'
+]);
+
+Route::get('post/category/{category}', 'api\PostController@category')->name('post.category');
+Route::get('post/url_clean/{url_clean}', 'api\PostController@url_clean')->name('post.url');
+
+Route::get('category', 'api\CategoryController@index')->name('category.index');

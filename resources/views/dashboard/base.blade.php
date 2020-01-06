@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{asset("css/app.css")}}">
 
 
+
 </head>
 <body>
 {{-- NAVBAR --}}
@@ -17,7 +18,7 @@
 
     <div class="container">
         {{-- notificacion en caso de exito  --}}
-         {{-- @include('dashboard.partials.session-status') --}}
+         @include('dashboard.partials.session-status')
         {{-- //carga el contenido de la template --}}
           @yield('content')
     </div>

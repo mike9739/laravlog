@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers\dashboard;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostPost;
 use App\Post;
+use App\PostImage;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    //VERIFICA QUE EL USUARIO SE ENCUENTRE LOGUEADO
+    public function __construct()
+    {
+        $this->middleware(['auth','isAdmin']);
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +26,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at','desc')->paginate(4);
+
+        $posts = Post::orderBy('created_at','desc')->paginate(10);
 
         return view("dashboard.post.index",['posts'=>$posts]);
 
@@ -30,7 +41,8 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view("dashboard.post.create",['post'=>new Post]);
+        $categories = Category::pluck('id','title');
+        return view("dashboard.post.create",['post'=>new Post,'categories'=>$categories]);
     }
 
     /**
@@ -41,17 +53,8 @@ class PostController extends Controller
      */
     public function store(StorePostPost $request)
     {
-        //VALIDACION DEL FORMULARIO
-    //    $request->validate([
-    //        'title'=>'required| min:5 | max:500',
-    //        'url_clean' => 'required | min:5 | max:500',
-    //        'content' => 'required | min:5'
-    //    ]);
-        echo "El titulo es: ".$request->input('title');
+
         Post::create($request -> validated());
-
-
-
         return back()->with('status','Post creado con exito');
 
 
@@ -88,7 +91,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
-        return view('dashboard.post.edit',["post"=>$post]);
+        $categories = Category::pluck('id','title');
+        return view('dashboard.post.edit',["post"=>$post,"categories"=>$categories]);
 
     }
 
@@ -108,6 +112,24 @@ class PostController extends Controller
     }
 
     /**
+     *
+     *
+     * Upload an image and asosiate with a post
+     * @param Request $request
+     * @param Post $post
+     */
+    public function uploadImage(Request $request , Post $post){
+        $request->validate(['required|image'=>'mimes:jpeg,bmp,png|max:10240']);
+
+        $imageName = time()."." .$request->image->extension();
+        $request->image->move(public_path('images'),$imageName);
+        PostImage::create(['image'=> $imageName,'post_id'=>$post->id]);
+        return back()->with('status','Imagen cargada con exito :D');
+
+    }
+
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -119,6 +141,8 @@ class PostController extends Controller
         $post->delete($post);
 
         return back()->with('status','Post eliminado');
+
+
 
     }
 }

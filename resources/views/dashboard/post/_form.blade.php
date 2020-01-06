@@ -29,8 +29,26 @@
     </div>
 
     <div class="form-group">
+        <label for="category_id">Categorías</label>
+        <select class="form-control" name="category_id" id="category_id">
+            @foreach ($categories as $title => $id)
+           <option {{ $post->category_id == $id ? 'selected="selected"' : '' }} value="{{$id}}">{{$title}}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="posted">Publicado</label>
+        <select class="form-control" name="posted" id="category_id">
+           @include('dashboard.partials.option-posted',['selection'=>$post->posted])
+        </select>
+    </div>
+
+
+
+    <div class="form-group">
         <label for="content">Content</label>
-        <textarea  class="form-control" name="content"rows="3">{{old('content',$post->content)}}</textarea>
+        <textarea  class="form-control" id="content" name="content"rows="3">{{old('content',$post->content)}}</textarea>
         @error('content')
         <div class="alert alert-danger mt-3" role="alert">
             Por favor inserte un contenido valido

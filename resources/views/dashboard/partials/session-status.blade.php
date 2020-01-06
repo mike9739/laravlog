@@ -1,5 +1,5 @@
 @if ('status')
 <div class="alert alert-primary" role="alert">
-    Formulario creado correctamente
+    {{session('status')}}
 </div>
 @endif
